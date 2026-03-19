@@ -159,17 +159,35 @@ Always provide types and defaults to all of the documentation options in order t
 
 **configuration.example.option**
 
-`string = 'none'`
+`string`
 
-Where `= 'none'` means that the default value is `'none'` for the given option.
+Use a defaults table to list the default value(s) for the given option.
 
-`string = 'none': 'none' | 'development' | 'production'`
+| Default  |
+| :------- |
+| `'none'` |
+
+Where `'none'` in the `Default` table means that the default value is `'none'` for the given option. If an option has the same default for all modes, simplify it like so.
+
+`string: 'none' | 'development' | 'production'`
 
 Where `: 'none' | 'development' | 'production'` enumerates the possible type values, in this case, three strings are acceptable: `'none'`, `'development'`, and `'production'`.
 
+If an option has different defaults depending on the mode, use a Mode-Default table:
+
+**optimization.moduleIds**
+
+`boolean` `string: 'natural' | 'named' | 'deterministic' | 'size'`
+
+| Mode            | Default           |
+| :-------------- | :---------------- |
+| `'production'`  | `'deterministic'` |
+| `'development'` | `'named'`         |
+| `'none'`        | `'natural'`       |
+
 Use space between types to list all available types for the given option:
 
-`string = 'none': 'none' | 'development' | 'production'` `boolean`
+`string: 'none' | 'development' | 'production'` `boolean`
 
 To mark an array, use square brackets:
 
@@ -193,17 +211,17 @@ Which means that the option expects one or few `TerserPlugin` instances.
 
 To mark a number, use `number`:
 
-`number = 15: 5, 15, 30`
+`number: 5, 15, 30`
 
 To mark an object, use `object`:
 
-`object = { prop1 string = 'none': 'none' | 'development' | 'production', prop2 boolean = false, prop3 function (module) => string }`
+`object = { prop1 string: 'none' | 'development' | 'production', prop2 boolean, prop3 function (module) => string }`
 
 When object's key can have multiple types, use `|` to list them. Here is an example, where `prop1` can be both a string and an array of strings:
 
-`object = { prop1 string = 'none': 'none' | 'development' | 'production' | [string]}`
+`object = { prop1 string: 'none' | 'development' | 'production' | [string]}`
 
-This allows us to display the defaults, enumeration and other information.
+This allows us to display the enumeration and other information.
 
 If the object's key is dynamic, user-defined, use `<key>` to describe it:
 
@@ -213,10 +231,15 @@ If the object's key is dynamic, user-defined, use `<key>` to describe it:
 
 Sometimes, we want to describe certain properties of objects and functions in lists. When applicable add typing directly to the list where properties are enlisted:
 
-- `madeUp` (`boolean = true`): short description
-- `shortText` (`string = 'i am text'`): another short description
+- `madeUp` (`boolean`): short description
+- `shortText` (`string`): another short description
 
-W> `:` is not a necessity here, note the property, type and default.
+| Property    | Default       |
+| :---------- | :------------ |
+| `madeUp`    | `true`        |
+| `shortText` | `'i am text'` |
+
+W> `:` is not a necessity here, note the property and type. List defaults in a table when needed.
 
 An example can be found on the [`options` section of the EvalSourceMapDevToolPlugin's page](/plugins/eval-source-map-dev-tool-plugin/#options).
 
